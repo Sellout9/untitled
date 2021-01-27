@@ -82,7 +82,7 @@ allActions["attack"] = function() {
         {
           eHealth -= pAttack;
           health -= eAttack;
-          out3 = `you hit the enemy ${enemy} for ${pAttack} damage. the enemy ${enemy} strikes you back for ${eAttack} damage.`
+          out3 = `you hit the enemy ${enemy} with your ${weapon} for ${pAttack} damage. the enemy ${enemy} strikes you back for ${eAttack} damage.`
           if (health <= 0){
             playerDead()
           }
@@ -93,7 +93,7 @@ allActions["attack"] = function() {
         if (eHit == false && hit == true)
         {
           eHealth -= pAttack
-          out3 = `you hit the enemy ${enemy} for ${pAttack} damage. the enemy ${enemy} fails to hit you`
+          out3 = `you hit the enemy ${enemy} with your ${weapon} for ${pAttack} damage. the enemy ${enemy} fails to hit you`
           if (health <= 0){
             playerDead()
           }
