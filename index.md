@@ -204,7 +204,7 @@ function playerDead(){
 
 }
 function enemyDead(){
-  let inCombat = false;
+  inCombat = false;
   if (enemy == "ghoul"){
     droppedCopper = eLevel *= 5;
     copper += droppedCopper;
