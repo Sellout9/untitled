@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<input type="text" id="input" value="output">
+
+
+<button onclick="run()">movement</button>
+
+<input type="text" id="cmd" value="action">
+
+<button onclick="action()">action</button>
+
+<p id="x"></p>
+<p id="msg"></p>
+
+<script>
+const responses = new Map([
+  ['north', [ 0, 1]],
+  ['south', [ 0,  -1]],
+  ['east',  [ 1,  0]],
+  ['west',  [-1,  0]],
+]);
+let pos = [0, 0];
+let copper = 0;
+let health = 10;
+let pAttack = 2;
+let trapdoorFound = false;
+let inCombat = false;
+let eAttack = 0;
+let eHitChance = 0;
+let eHealth = 0;
+let enemy = "";
+let hitChance = 5;
+let weapon = "bare hands";
+let hit = false;
+let eHit = false;
+let roll = 0;
+let out3 = "";
+let eLevel;
+let allActions = {}
+allActions["inv"] = function() {
+  const out2 = `you have ${copper} copper pieces.`;
+    document.getElementById('msg').innerHTML = out2;
+    msg.style.color = "black";
+}
+allActions["health"] = function() {
+  const out2 = `you have ${health} health.`;
+    document.getElementById('msg').innerHTML = out2;
+    msg.style.color = "black";
+}
+allActions["attack"] = function() {
+    if (inCombat == true){
+      roll = Math.floor(Math.random() * 10);
+        if (roll >= hitChance){
+          hit = true;
+        }
+        else {
+          hit = false;
+        }
+      roll = Math.floor(Math.random() * 10);
+        if(roll >= eHitChance){
+          eHit = true;
+        }
+        else{
+          eHit = false;
+        }
+        if (eHit == true && hit == true)
+        {
+          eHealth -= pAttack;
+          health -= eAttack;
+          out3 = `you hit the enemy ${enemy} for ${pAttack} damage. the enemy ${enemy} strikes you back for ${eAttack} damage.`
+          if (health <= 0){
+            playerDead()
+          }
+          if (eHealth <= 0){
+            enemyDead()
+          }
+        }
+        if (eHit == false && hit == true)
+        {
+          eHealth -= pAttack
+          out3 = `you hit the enemy ${enemy} for ${pAttack} damage. the enemy ${enemy} fails to hit you`
+          if (health <= 0){
+            playerDead()
+          }
+          if (eHealth <= 0){
+            enemyDead()
+          }
+        }
+        if (eHit == true && hit == false)
+        {
+          health -= eAttack;
+          out3 = `you fail to hit the enemy ${enemy}. the enemy ${enemy} strikes you for ${eAttack} damage.`
+          if (health <= 0){
+            playerDead()
+          }
+          if (eHealth <= 0){
+            enemyDead()
+          }
+        }
+        if (eHit == false && hit == false)
+        {
+          out3 = `you fail to hit the enemy ${enemy}. the enemy ${enemy} fails to hit you as well`
+          if (health <= 0){
+            playerDead()
+          }
+          if (eHealth <= 0){
+            enemyDead()
+          }
+        }
+      document.getElementById('msg').innerHTML = out3;
+      msg.style.color = "red";
+    }
+}
+
+
+//locations
+let runLocations = [[]];
+runLocations[0][1] = function (){
+    document.getElementById('msg').innerHTML = "something was here...";
+    msg.style.color = "red";
+  }
+
+
+
+//interaction locations
+let actionsLocations = [[]];
+actionsLocations[0][1]= function (){
+  if (document.getElementById("cmd").value == 'search'){
+    document.getElementById('msg').innerHTML = "you found 31 copper pieces";
+    msg.style.color = "blue";
+    copper += 31;
+  }
+}
+// finding trap door
+actionsLocations[0][3]= function (){
+  if (document.getElementById("cmd").value == 'search'){
+    document.getElementById('msg').innerHTML = "you see a small trapdoor";
+    msg.style.color = "red";
+    trapdoorFound = true;
+  }
+  // entering trapdoor
+  if (document.getElementById("cmd").value == 'enter'){
+    if(trapdoorFound == true){
+      document.getElementById('msg').innerHTML = "you enter the trap door...a ghoulish figure jolts towards you ";
+      msg.style.color = "red";
+      eLevel = 1;
+      ghoul(1);
+    }
+    else
+    {
+      document.getElementById('msg').innerHTML = "what are you trying to enter?";
+    }
+  }
+
+
+  
+  
+}
+
+
+
+function run() {
+  const x = document.getElementById("input").value;
+  const movement = responses.has(x) ? responses.get(x) : [0, 0];
+  pos[0] += movement[0];
+  pos[1] += movement[1];
+  
+  const out = `you are now at ${pos[0]}, ${pos[1]}`;
+  document.getElementById('x').innerHTML = out;
+ 
+    if(runLocations[pos[0]][pos[1]] != undefined){
+      (runLocations[pos[0]][pos[1]])(); 
+    }
+  
+    
+  
+  }
+  //town
+  if (pos[0] == 3 && pos[1] == 0) {
+    document.getElementById('msg').innerHTML = "you are at a small town. the town has a shop.";
+    msg.style.color = "gray";             
+  }
+
+function action(cmd) {
+  const a = document.getElementById("cmd").value;
+  
+  if(allActions[a] != undefined)
+  {
+    (allActions[a])();
+  }
+  
+  if(actionsLocations[pos[0]][pos[1]] != undefined){
+      (actionsLocations[pos[0]][pos[1]])(); 
+    }
+  
+
+}     
+
+function playerDead(){
+
+}
+function enemyDead(){
+  let inCombat = false;
+  if (enemy == "ghoul"){
+    droppedCopper = eLevel *= 5;
+    copper += droppedCopper;
+    out3 = `the ghoul dies and drops ${droppedCopper} copper pieces.`
+    document.getElementById('msg').innerHTML = out3;
+  }
+
+}
+function ghoul(level) {
+  enemy = "ghoul";
+  inCombat = true;
+  eHealth = (level * 7);
+  eAttack = (level * 2)
+  let eHitChance = 4;
+}
+</script>
+
+</body>
+</html>
