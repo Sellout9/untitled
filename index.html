@@ -210,6 +210,8 @@ function enemyDead(){
     copper += droppedCopper;
     out3 = `the ghoul dies and drops ${droppedCopper} copper pieces.`
     document.getElementById('msg').innerHTML = out3;
+    droppedCopper = 0;
+    eLevel = 0;
   }
 
 }
