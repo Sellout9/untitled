@@ -134,7 +134,11 @@ runLocations[0][1] = function (){
     document.getElementById('msg').innerHTML = "something was here...";
     msg.style.color = "red";
   }
-
+runLocations[3][0] = function (){
+  document.getElementById('msg').innerHTML = "you are outside of a small town";
+  msg.style.color = "gray";  
+}
+ 
 
 
 //interaction locations
@@ -196,10 +200,7 @@ function run() {
   }
   }
   //town
-  /*if (pos[0] == 3 && pos[1] == 0) {
-    document.getElementById('msg').innerHTML = "you are at a small town. the town has a shop.";
-    msg.style.color = "gray";             
-  }*/
+ 
 
 function action(cmd) {
   if (gameOver == true){
