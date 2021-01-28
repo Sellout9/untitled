@@ -40,7 +40,7 @@ let roll = 0;
 let out3 = "";
 let eLevel;
 let gameOver = false;
-let allActions = {}
+let allActions = {};
 allActions["inv"] = function() {
   if (gameOver == true){
     out3 = "the game is over."
@@ -134,7 +134,7 @@ runLocations[0][1] = function (){
     document.getElementById('msg').innerHTML = "something was here...";
     msg.style.color = "red";
   }
-runLocations[3][0] = function (){
+runLocations[0][4] = function (){
   document.getElementById('msg').innerHTML = "you are outside of a small town";
   msg.style.color = "gray";  
 }
@@ -179,6 +179,7 @@ actionsLocations[0][3]= function (){
 
 
 function run() {
+
   if (gameOver == true){
     out3 = "the game is over."
     document.getElementById('msg').innerHTML = out3;
@@ -191,9 +192,9 @@ function run() {
   
   const out = `you are now at ${pos[0]}, ${pos[1]}`;
   document.getElementById('x').innerHTML = out;
- 
-    if(runLocations[pos[0]][pos[1]] != undefined){
+  if(runLocations[pos[0]][pos[1]] != undefined){
       (runLocations[pos[0]][pos[1]])(); 
+    
     }
   
     
