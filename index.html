@@ -25,7 +25,7 @@ const responses = new Map([
 let pos = [0, 0];
 let copper = 0;
 let health = 10;
-let pAttack = 2;
+let pAttack = 20;
 let trapdoorFound = false;
 let inCombat = false;
 let eAttack = 0;
@@ -232,18 +232,12 @@ function playerDead(){
 function enemyDead(){
   inCombat = false;
   if (enemy == "ghoul"){
-    if (gameOver = true){
-      out3 = `you died. game over.`
-  document.getElementById('msg').innerHTML = out3;
-    }
-    else{
     droppedCopper = eLevel *= 5;
     copper += droppedCopper;
     out3 = `the ghoul dies and drops ${droppedCopper} copper pieces.`
     document.getElementById('msg').innerHTML = out3;
     droppedCopper = 0;
     eLevel = 0;
-    }
   }
 
 }
