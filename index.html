@@ -232,12 +232,18 @@ function playerDead(){
 function enemyDead(){
   inCombat = false;
   if (enemy == "ghoul"){
+    if (gameOver = true){
+      out3 = `you died. game over.`
+  document.getElementById('msg').innerHTML = out3;
+    }
+    else{
     droppedCopper = eLevel *= 5;
     copper += droppedCopper;
     out3 = `the ghoul dies and drops ${droppedCopper} copper pieces.`
     document.getElementById('msg').innerHTML = out3;
     droppedCopper = 0;
     eLevel = 0;
+    }
   }
 
 }
