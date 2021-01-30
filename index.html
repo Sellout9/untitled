@@ -14,6 +14,7 @@
 
 <p id="x"></p>
 <p id="msg"></p>
+<p id="combat"></p>
 
 <script>
 const responses = new Map([
@@ -124,6 +125,8 @@ allActions["attack"] = function() {
         }
       document.getElementById('msg').innerHTML = out3;
       msg.style.color = "red";
+      const out4 = `you have ${health} health. the ${enemy} has ${eHealth} health.`;
+    document.getElementById('combat').innerHTML = out4;
     }
 }
 
