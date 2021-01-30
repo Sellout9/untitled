@@ -230,7 +230,8 @@ function playerDead(){
 
 }
 function enemyDead(){
-  inCombat = false;
+  if (gameOver == false){
+    inCombat = false;
   if (enemy == "ghoul"){
     droppedCopper = eLevel *= 5;
     copper += droppedCopper;
@@ -240,6 +241,7 @@ function enemyDead(){
     eLevel = 0;
   }
 
+}
 }
 function ghoul(level) {
   enemy = "ghoul";
