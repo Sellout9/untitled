@@ -1,18 +1,17 @@
 //locations
-let runLocations = [[]];
+
 runLocations[0][1] = function (){
     document.getElementById('msg').innerHTML = "something was here...";
     msg.style.color = "red";
   }
-runLocations[0][4] = function (){
+runLocations[2][0] = function (){
   document.getElementById('msg').innerHTML = "you are outside of a small town";
-  msg.style.color = "gray";  
+  msg.style.color = "gray";
 }
- 
 
 
 //interaction locations
-let actionsLocations = [[]];
+
 actionsLocations[0][1]= function (){
   if (document.getElementById("cmd").value == 'search'){
     document.getElementById('msg').innerHTML = "you found 31 copper pieces";
