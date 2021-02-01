@@ -16,6 +16,8 @@ let pos = [0, 0];
      let out3 = "";
      let eLevel;
      let gameOver = false;
+     let actionsLocations = [[]];
+     let runLocations = [[]];
      let allActions = {};
 const responses = new Map([
     ['north', [ 0, 1]],
@@ -130,10 +132,11 @@ const responses = new Map([
     
     const out = `you are now at ${pos[0]}, ${pos[1]}`;
     document.getElementById('x').innerHTML = out;
-    if(runLocations[pos[0]][pos[1]] != undefined){
-        (runLocations[pos[0]][pos[1]])(); 
-      
-      }
+    
+    const row = runLocations[pos[0]];
+    if (row && row[pos[1]]) {
+        (runLocations[pos[0]][pos[1]])();
+    }
     
       
     }
@@ -152,9 +155,10 @@ const responses = new Map([
       (allActions[a])();
     }
     
-    if(actionsLocations[pos[0]][pos[1]] != undefined){
-        (actionsLocations[pos[0]][pos[1]])(); 
-      }
+    const row = actionsLocations[pos[0]];
+    if (row && row[pos[1]]) {
+        (actionsLocations[pos[0]][pos[1]])();
+    }
     
   
   }     
