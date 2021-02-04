@@ -1,5 +1,6 @@
 let pos = [0, 0];
      let copper = 0;
+     let inTown = false;
      let health = 10;
      let pAttack = 2;
      let trapdoorFound = false;
@@ -16,9 +17,14 @@ let pos = [0, 0];
      let out3 = "";
      let eLevel;
      let gameOver = false;
-     let actionsLocations = [[]];
-     let runLocations = [[]];
+     let actionsLocations = [[],[],[],[],[],[],[],[],[],[],[],[],[]];
+     let runLocations = [[],[],[],[],[],[],[],[],[],[],[],[],[]];
      let allActions = {};
+     buyScreen = false;
+     sellScreen = false;
+     let apples = 0;
+     let dagger = false;
+     let secret = false; 
 const responses = new Map([
     ['north', [ 0, 1]],
     ['south', [ 0,  -1]],
@@ -32,10 +38,16 @@ const responses = new Map([
     }
     else
     {
-    const out2 = `you have ${copper} copper pieces.`;
+    const out2 = `you have ${copper} copper pieces and ${apples} apples.`;
       document.getElementById('msg').innerHTML = out2;
       msg.style.color = "black";
     }
+  }
+  allActions["equip dagger"] = function() {
+    const out2 = `you equip the dagger.`;
+      document.getElementById('msg').innerHTML = out2;
+      pAttack = 4;
+      hitChance = 5;
   }
   allActions["health"] = function() {
     const out2 = `you have ${health} health.`;
@@ -114,7 +126,7 @@ const responses = new Map([
   }
   
   
-  
+
   
   
   
@@ -123,6 +135,10 @@ const responses = new Map([
     if (gameOver == true){
       out3 = "the game is over."
       document.getElementById('msg').innerHTML = out3;
+    }
+    if (inTown == true){
+      out3 = "exit the town first."
+      document.getElementById('x').innerHTML = out3;
     }
     else {
     const x = document.getElementById("input").value;
@@ -133,15 +149,17 @@ const responses = new Map([
     const out = `you are now at ${pos[0]}, ${pos[1]}`;
     document.getElementById('x').innerHTML = out;
     
-    const row = runLocations[pos[0]];
-    if (row && row[pos[1]]) {
-        (runLocations[pos[0]][pos[1]])();
-    }
+  if (pos[0] < runLocations.length)
     
-      
+    if (Array.isArray(runLocations[pos[0]]) && pos[1] < runLocations[pos[0]].length)
+      {
+        if(runLocations[pos[0]][pos[1]] != undefined){
+            (runLocations[pos[0]][pos[1]])();  
+                }
+      }
     }
-    }
-  
+}
+    
   function action(cmd) {
     if (gameOver == true){
       out3 = "the game is over."
@@ -155,7 +173,7 @@ const responses = new Map([
       (allActions[a])();
     }
     
-    const row = actionsLocations[pos[0]];
+    let row = actionsLocations[pos[0]];
     if (row && row[pos[1]]) {
         (actionsLocations[pos[0]][pos[1]])();
     }
