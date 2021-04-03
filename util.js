@@ -24,7 +24,16 @@ let pos = [0, 0];
      sellScreen = false;
      let apples = 0;
      let dagger = false;
-     let secret = false; 
+     let secret = false;
+     let shakenTree = 0;
+     let treeFallen = false;
+     let crystalSeeds = 0;
+     let sticks = 0;
+     let strangeSword = false;
+     let strangeSwordEquip = false;
+     let souls = 0;
+     let wood = 0;
+
 const responses = new Map([
     ['north', [ 0, 1]],
     ['south', [ 0,  -1]],
@@ -48,6 +57,12 @@ const responses = new Map([
       document.getElementById('msg').innerHTML = out2;
       pAttack = 4;
       hitChance = 5;
+  }
+  allActions["equip strange sword"] = function() {
+    const out2 = `you equip the strange sword.`;
+      document.getElementById('msg').innerHTML = out2;
+      pAttack = 4;
+      hitChance = 4;
   }
   allActions["health"] = function() {
     const out2 = `you have ${health} health.`;
@@ -198,7 +213,9 @@ const responses = new Map([
       droppedCopper = 0;
       eLevel = 0;
     }
-  
+    if (strangeSwordEquip == true){
+      souls += 1;
+    }
   }
   }
   function ghoul(level) {
@@ -207,4 +224,39 @@ const responses = new Map([
     eHealth = (level * 7);
     eAttack = (level * 2)
     eHitChance = 4;
+  }
+  function shakeTree(){
+    if (shakeTree >= 357){
+      treeFallen = true;
+      out3 = "the tree has fallen you pick up 4 pieces of wood"
+      wood += 4;
+    }
+    if (treeFallen == false){
+      shakenTree += 1;
+      roll = Math.floor(Math.random() * 500);
+      if (roll >= 14 && roll <= 17){
+        out3 = "a strange sword with odd writing falls from the tree and into your bag."
+        strangeSword = true;
+      }
+      if (roll >= 0 && roll <= 13){
+        out3 = "you find some strange seeds."
+        crystalSeeds + 1;
+      }
+      if (roll >= 18 && roll <= 50){
+        out3 = "an apple drops from the tree."
+        apples + 1;
+      }
+      if (roll >= 51 && roll <= 250){
+        out3 = "a stick falls from the tree."
+        sticks + 1;
+      }
+      if (roll >= 250 && roll <= 500){
+        out3 = "nothing happens."
+      }
+
+      }
+    if (treeFallen == true){
+      out3 = "the tree is fallen."
+    }
+    document.getElementById('x').innerHTML = out3;
   }
