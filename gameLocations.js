@@ -8,11 +8,29 @@ runLocations[3][0] = function (){
   document.getElementById('msg').innerHTML = "you are outside of a small town";
   msg.style.color = "gray";
 }
-
+runLocations[2][1] = function (){
+  document.getElementById('msg').innerHTML = "a large tree stands in front of you.";
+  msg.style.color = "black";
+}
 
 
 //interaction locations
 
+actionsLocations[2][1]= function (){
+  if (document.getElementById("cmd").value == 'chop'){
+    document.getElementById('msg').innerHTML = "the tree fights back dealing 3 damage";
+    document.getElementById('x').innerHTML = `you have ${health} health, maybe you don't wanna chop this tree...`;
+    health -= 3; 
+    msg.style.color = "gray";
+    inTown = true;
+  }
+  if (document.getElementById("cmd").value == 'search'){
+    document.getElementById('msg').innerHTML = "a carving in the tree reads - h tigeysrskatetnrh i";
+  }
+  if (document.getElementById("cmd").value == 'shake'){
+    shakeTree();
+  }
+  }
 actionsLocations[3][0]= function (){
   if (document.getElementById("cmd").value == 'enter'){
     document.getElementById('msg').innerHTML = "you enter the town";
@@ -97,4 +115,3 @@ actionsLocations[0][3]= function (){
       document.getElementById('msg').innerHTML = "what are you trying to enter?";
     }
   }
-  
