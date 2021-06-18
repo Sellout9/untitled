@@ -47,7 +47,7 @@ const responses = new Map([
     }
     else
     {
-    const out2 = `you have ${copper} copper pieces and ${apples} apples.`;
+    const out2 = `you have ${copper} copper pieces, ${apples} apples, ${sticks} sticks, ${wood} wood.`;
       document.getElementById('msg').innerHTML = out2;
       msg.style.color = "black";
     }
@@ -152,8 +152,10 @@ const responses = new Map([
       document.getElementById('msg').innerHTML = out3;
     }
     if (inTown == true){
-      out3 = "exit the town first."
-      document.getElementById('x').innerHTML = out3;
+      inTown = false;
+        buyScreen = false;
+        document.getElementById('x').innerHTML = `you are now at ${pos[0]}, ${pos[1]}`;
+        document.getElementById('msg').innerHTML = "you exit the town";
     }
     else {
     const x = document.getElementById("input").value;
