@@ -1,264 +1,123 @@
-let pos = [0, 0];
-     let copper = 0;
-     let inTown = false;
-     let health = 10;
-     let pAttack = 2;
-     let trapdoorFound = false;
-     let inCombat = false;
-     let eAttack = 0;
-     let eHitChance = 0;
-     let eHealth = 0;
-     let enemy = "";
-     let hitChance = 5;
-     let weapon = "bare hands";
-     let hit = false;
-     let eHit = false;
-     let roll = 0;
-     let out3 = "";
-     let eLevel;
-     let gameOver = false;
-     let actionsLocations = [[],[],[],[],[],[],[],[],[],[],[],[],[]];
-     let runLocations = [[],[],[],[],[],[],[],[],[],[],[],[],[]];
-     let allActions = {};
-     buyScreen = false;
-     sellScreen = false;
-     let apples = 0;
-     let dagger = false;
-     let secret = false;
-     let shakenTree = 0;
-     let treeFallen = false;
-     let crystalSeeds = 0;
-     let sticks = 0;
-     let strangeSword = false;
-     let strangeSwordEquip = false;
-     let souls = 0;
-     let wood = 0;
+//locations
 
-const responses = new Map([
-    ['north', [ 0, 1]],
-    ['south', [ 0,  -1]],
-    ['east',  [ 1,  0]],
-    ['west',  [-1,  0]],
-  ]);
-  allActions["inv"] = function() {
-    if (gameOver == true){
-      out3 = "the game is over."
-      document.getElementById('msg').innerHTML = out3;
+runLocations[0][1] = function (){
+    document.getElementById('msg').innerHTML = "something was here...";
+    msg.style.color = "red";
+  }
+runLocations[3][0] = function (){
+  document.getElementById('msg').innerHTML = "you are outside of a small town";
+  msg.style.color = "gray";
+}
+runLocations[2][1] = function (){
+  document.getElementById('msg').innerHTML = "a large tree stands in front of you.";
+  msg.style.color = "black";
+}
+
+
+//interaction locations
+
+actionsLocations[2][1]= function (){
+  if (document.getElementById("cmd").value == 'chop'){
+    if(health > 0){
+
+    document.getElementById('msg').innerHTML = "the tree fights back dealing 3 damage";
+    document.getElementById('x').innerHTML = `you have ${health} health, maybe you don't wanna chop this tree...`;
+    health -= 3; 
+    msg.style.color = "gray";
+    inTown = true;
     }
-    else
-    {
-    const out2 = `you have ${copper} copper pieces, ${apples} apples, ${sticks} sticks, ${wood} wood.`;
-      document.getElementById('msg').innerHTML = out2;
-      msg.style.color = "black";
+    else{
+      document.getElementById('x').innerHTML = `you have ${health} health, you are dead.`;
     }
   }
-  allActions["equip dagger"] = function() {
-    const out2 = `you equip the dagger.`;
-      document.getElementById('msg').innerHTML = out2;
-      pAttack = 4;
-      hitChance = 5;
+  if (document.getElementById("cmd").value == 'search'){
+    document.getElementById('msg').innerHTML = "a carving in the tree reads - h tigeysrskatetnrh i";
   }
-  allActions["equip strange sword"] = function() {
-    const out2 = `you equip the strange sword.`;
-      document.getElementById('msg').innerHTML = out2;
-      pAttack = 4;
-      hitChance = 4;
+  if (document.getElementById("cmd").value == 'shake'){
+    shakeTree();
   }
-  allActions["health"] = function() {
-    const out2 = `you have ${health} health.`;
-      document.getElementById('msg').innerHTML = out2;
-      msg.style.color = "black";
   }
-  allActions["attack"] = function() {
-    if (gameOver == true){
-      out3 = "the game is over."
-      document.getElementById('msg').innerHTML = out3;
-    }
-      if (inCombat == true){
-        roll = Math.floor(Math.random() * 10);
-          if (roll >= hitChance){
-            hit = true;
-          }
-          else {
-            hit = false;
-          }
-        roll = Math.floor(Math.random() * 10);
-          if(roll >= eHitChance){
-            eHit = true;
-          }
-          else{
-            eHit = false;
-          }
-          if (eHit == true && hit == true)
-          {
-            eHealth -= pAttack;
-            health -= eAttack;
-            out3 = `you hit the enemy ${enemy} with your ${weapon} for ${pAttack} damage. the enemy ${enemy} strikes you back for ${eAttack} damage.`
-            if (health <= 0){
-              playerDead()
-            }
-            if (eHealth <= 0){
-              enemyDead()
-            }
-          }
-          if (eHit == false && hit == true)
-          {
-            eHealth -= pAttack
-            out3 = `you hit the enemy ${enemy} with your ${weapon} for ${pAttack} damage. the enemy ${enemy} fails to hit you`
-            if (health <= 0){
-              playerDead()
-            }
-            if (eHealth <= 0){
-              enemyDead()
-            }
-          }
-          if (eHit == true && hit == false)
-          {
-            health -= eAttack;
-            out3 = `you fail to hit the enemy ${enemy}. the enemy ${enemy} strikes you for ${eAttack} damage.`
-            if (health <= 0){
-              playerDead()
-            }
-            if (eHealth <= 0){
-              enemyDead()
-            }
-          }
-          if (eHit == false && hit == false)
-          {
-            out3 = `you fail to hit the enemy ${enemy}. the enemy ${enemy} fails to hit you as well`
-            if (health <= 0){
-              playerDead()
-            }
-            if (eHealth <= 0){
-              enemyDead()
-            }
-          }
-        document.getElementById('msg').innerHTML = out3;
-        msg.style.color = "red";
-        const out4 = `you have ${health} health. the ${enemy} has ${eHealth} health.`;
-      document.getElementById('combat').innerHTML = out4;
+actionsLocations[3][0]= function (){
+  if (document.getElementById("cmd").value == 'enter'){
+    document.getElementById('msg').innerHTML = "you enter the town";
+    msg.style.color = "gray";
+    inTown = true;
+  }
+    if (document.getElementById("cmd").value == 'buy'){
+      if(inTown == true){
+      document.getElementById('msg').innerHTML = "dagger 150 copper, apples for 5 copper each";
+      document.getElementById('x').innerHTML = "you can buy dagger and apples here";
+      msg.style.color = "gray";
+      inTown = true;
+      buyScreen = true;
       }
-  }
-  
-  
-
-  
-  
-  
-  function run() {
-  
-    if (gameOver == true){
-      out3 = "the game is over."
-      document.getElementById('msg').innerHTML = out3;
+      if(inTown == false){
+        document.getElementById('x').innerHTML = "there is nothing to buy here.";
+      }
     }
-    if (inTown == true){
-      inTown = false;
+      if (document.getElementById("cmd").value == 'exit'){
+        inTown = false;
         buyScreen = false;
         document.getElementById('x').innerHTML = `you are now at ${pos[0]}, ${pos[1]}`;
         document.getElementById('msg').innerHTML = "you exit the town";
-    }
-    else {
-    const x = document.getElementById("input").value;
-    const movement = responses.has(x) ? responses.get(x) : [0, 0];
-    pos[0] += movement[0];
-    pos[1] += movement[1];
-    
-    const out = `you are now at ${pos[0]}, ${pos[1]}`;
-    document.getElementById('x').innerHTML = out;
-    
-  if (pos[0] < runLocations.length)
-    
-    if (Array.isArray(runLocations[pos[0]]) && pos[1] < runLocations[pos[0]].length)
-      {
-        if(runLocations[pos[0]][pos[1]] != undefined){
-            (runLocations[pos[0]][pos[1]])();  
-                }
+      }
+      if (document.getElementById("cmd").value == 'apple'){
+        if(buyScreen == true){
+          if(copper >= 5){
+          document.getElementById('x').innerHTML = `you purchased an apple, you have ${copper} copper.`;
+            document.getElementById('msg').innerHTML = `(eat apple) to eat an apple.`;
+            apples += 1;
+            copper -= 5; 
+          }
+          }
+      }
+      if (document.getElementById("cmd").value == 'dagger'){
+        if(buyScreen == true){
+          if(copper >= 150 && dagger == false){
+            dagger = true;
+            copper -= 150;
+            document.getElementById('x').innerHTML = `you purchased a dagger, you have ${copper} copper.`;
+            document.getElementById('msg').innerHTML = "(equip dagger) to equip.";
+          }
+          if (copper <= 150){
+            document.getElementById('msg').innerHTML = `you only have ${copper} copper you need 150.`;
+          }
+          if (dagger == true){
+            document.getElementById('msg').innerHTML = `you already have a dagger.`;
+          }
+        }
       }
     }
-}
-    
-  function action(cmd) {
-    if (gameOver == true){
-      out3 = "the game is over."
-      document.getElementById('msg').innerHTML = out3;
-    }
-    else {
-    const a = document.getElementById("cmd").value;
-    
-    if(allActions[a] != undefined)
-    {
-      (allActions[a])();
-    }
-    
-    let row = actionsLocations[pos[0]];
-    if (row && row[pos[1]]) {
-        (actionsLocations[pos[0]][pos[1]])();
-    }
-    
-  
-  }     
-  }
-  function playerDead(){
-    out3 = `you died. game over.`
-    document.getElementById('msg').innerHTML = out3;
-    gameOver = true;
-  
-  }
-  function enemyDead(){
-    if (gameOver == false){
-      inCombat = false;
-    if (enemy == "ghoul"){
-      droppedCopper = eLevel *= 5;
-      copper += droppedCopper;
-      out3 = `the ghoul dies and drops ${droppedCopper} copper pieces.`
-      document.getElementById('msg').innerHTML = out3;
-      droppedCopper = 0;
-      eLevel = 0;
-    }
-    if (strangeSwordEquip == true){
-      souls += 1;
-    }
-  }
-  }
-  function ghoul(level) {
-    enemy = "ghoul";
-    inCombat = true;
-    eHealth = (level * 7);
-    eAttack = (level * 2)
-    eHitChance = 4;
-  }
-  function shakeTree(){
-    if (shakeTree >= 357){
-      treeFallen = true;
-      out3 = "the tree has fallen you pick up 4 pieces of wood"
-      wood += 4;
-    }
-    if (treeFallen == false){
-      shakenTree += 1;
-      roll = Math.floor(Math.random() * 500);
-      if (roll >= 14 && roll <= 17){
-        out3 = "a strange sword with odd writing falls from the tree and into your bag."
-        strangeSword = true;
-      }
-      if (roll >= 0 && roll <= 13){
-        out3 = "you find some strange seeds."
-        crystalSeeds + 1;
-      }
-      if (roll >= 18 && roll <= 50){
-        out3 = "an apple drops from the tree."
-        apples + 1;
-      }
-      if (roll >= 51 && roll <= 250){
-        out3 = "a stick falls from the tree."
-        sticks + 1;
-      }
-      if (roll >= 250 && roll <= 500){
-        out3 = "nothing happens."
-      }
 
+
+// finding trap door
+actionsLocations[0][3]= function (){
+  if (document.getElementById("cmd").value == 'search'){
+    document.getElementById('msg').innerHTML = "you see a small trapdoor";
+    msg.style.color = "red";
+    trapdoorFound = true;
+  }
+}
+  actionsLocations[0][1]= function (){
+    if (document.getElementById("cmd").value == 'search'){
+      if (secret == false){
+      document.getElementById('msg').innerHTML = "you find 31 copper";
+      msg.style.color = "blue";
+      copper += 31;
+      secret = true;
       }
-    if (treeFallen == true){
-      out3 = "the tree is fallen."
     }
-    document.getElementById('x').innerHTML = out3;
+  }
+  // entering trapdoor
+  if (document.getElementById("cmd").value == 'enter'){
+    if(trapdoorFound == true){
+      document.getElementById('msg').innerHTML = "you enter the trap door...a ghoulish figure jolts towards you ";
+      msg.style.color = "red";
+      eLevel = 1;
+      ghoul(1);
+    }
+    else
+    {
+      document.getElementById('msg').innerHTML = "what are you trying to enter?";
+    }
   }
