@@ -19,10 +19,9 @@ runLocations[2][1] = function (){
 actionsLocations[2][1]= function (){
   if (document.getElementById("cmd").value == 'chop'){
     if(health > 0){
-
+    health -= 3; 
     document.getElementById('msg').innerHTML = "the tree fights back dealing 3 damage";
     document.getElementById('x').innerHTML = `you have ${health} health, maybe you don't wanna chop this tree...`;
-    health -= 3; 
     msg.style.color = "gray";
     inTown = true;
     }
